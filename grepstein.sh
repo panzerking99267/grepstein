@@ -77,7 +77,7 @@ ask_usrcmd () {
 					;;
 				"next"|"NEXT")
 					echo -e "$YEL \nProceding to next page... $DEF"
-					let "PAGE+=1"
+					((PAGE++))
 					fetch_results
 					;;
 				"exit"|"EXIT")
