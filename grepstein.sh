@@ -1,18 +1,33 @@
 #!/usr/bin/env bash
 
+if [[ $1 == "--fzf" ]]; then
+	shift
+	FZF=true
+else
+	FZF=false
+fi
+
 QUERY="$*"
 PAGE=1
 DEPS=(pdftotext jq httpie)
+TMP_PDF="/tmp/epstein_file.pdf"
 HEADERS=(
 	'User-Agent:Mozilla/5.0 (X11; Linux x86_64)'
 	'Cookie:justiceGovAgeVerified=true'
 )
-RED='\e[31m'
-YEL='\e[33m'
-GRN='\e[32m'
-DEF='\e[0m'
+RED=$'\e[31m'
+YEL=$'\e[33m'
+GRN=$'\e[32m'
+DEF=$'\e[0m'
 
-trap 'rm -rf /tmp/epstein_file.pdf' EXIT
+cleanup() {
+	for file in "$TMP_PDF" "$TMP_TXT"
+	do
+		[[ -f "$file" ]] && rm -f "$file"
+	done
+}
+
+trap 'cleanup' EXIT
 
 if [[ -z $QUERY ]]; then
 	echo -e "$RED Please provide a valid search term. $DEF"
@@ -41,7 +56,7 @@ fetch_results () {
 	mapfile -t PDF_URLS < <(echo "$DATA" | jq -r '.hits.hits[]._source.ORIGIN_FILE_URI' | sed 's/ /%20/g')
 	PDF_COUNT=${#PDF_URLS[@]}
 
-	#echo "$DATA"
+	[[ $1 == "--quiet" ]] && return 0
 
 	echo -e "$GRN \nWe found $TOTAL_RECORDS result(s) for ${QUERY} on all pages. Page $PAGE only shows $PDF_COUNT result(s) $DEF"
 
@@ -69,9 +84,9 @@ ask_usrcmd () {
 					echo -ne "$GRN \nPlease write the index number of the file that you want to open : $DEF"
 					read -r INDEX
 					if [[ $INDEX -ge 0 && $INDEX -lt $PDF_COUNT ]]; then
-						http "${PDF_URLS[INDEX]}" "${HEADERS[@]}" > /tmp/epstein_file.pdf
-						pdftotext -layout /tmp/epstein_file.pdf - | less
-						rm /tmp/epstein_file.pdf
+						http "${PDF_URLS[INDEX]}" "${HEADERS[@]}" > "$TMP_PDF"
+						pdftotext -layout "$TMP_PDF" - | less
+						rm "$TMP_PDF"
 						fetch_results
 					else
 						echo -e "$RED \nPlease Provide a valid index number $DEF"
@@ -95,5 +110,79 @@ ask_usrcmd () {
 }
 
 dependency_check
-fetch_results
-ask_usrcmd
+
+if ! $FZF
+then
+	fetch_results
+	ask_usrcmd
+	exit 0
+fi
+
+# fzf option
+
+command -v fzf &>/dev/null \
+|| { printf "fzf is not installed\n" 2>&1; exit 1; }
+
+TMP_TXT="/tmp/epstein_file.txt"
+export QUERY TMP_PDF TMP_TXT RED DEF
+
+get_file() {
+	local URL="$1"
+	local -a HEADERS
+
+	HEADERS=(
+		'User-Agent:Mozilla/5.0 (X11; Linux x86_64)'
+		'Cookie:justiceGovAgeVerified=true'
+	)
+
+	http GET "$URL" "${HEADERS[@]}" > "$TMP_PDF"
+	pdftotext -layout "$TMP_PDF" > "$TMP_TXT"
+	sed -i "s/${QUERY}/${RED}&${DEF}/gI" "$TMP_TXT"
+}
+
+preview() {
+	get_file "$1"
+	cat "$TMP_TXT"
+}
+
+get_all_urls() {
+	local page
+
+	while true
+	do
+		fetch_results --quiet
+
+		page=$(
+			for URL in "${PDF_URLS[@]}"
+			do
+				printf "%s\n" "$URL"
+			done
+		)
+
+		[[ $page == "$old_page" || -z "$page" ]] && break
+		old_page="$page"
+
+		printf "%s\n" "$page"
+		((PAGE++))
+	done
+}
+
+export -f fetch_results get_file preview
+
+header+="┌─┐┬─┐┌─┐┌─┐┌─┐┌┬┐┌─┐X┌┐┌"$'\n'
+header+="│ ┬├┬┘├┤ ├─┘└─┐ │ ├┤ ││││"$'\n'
+header+="└─┘┴└─└─┘┴  └─┘ ┴ └─┘┘┘└┘"
+
+fzf_opts=(
+	--reverse
+	--header-first
+	--header "$header"
+	--color "header:red:bold"
+	--preview 'bash -c "preview {}"'
+)
+
+file=$(get_all_urls | fzf "${fzf_opts[@]}")
+[[ -n "$file" ]] || exit 0
+
+get_file "$file"
+less -R "$TMP_TXT"
