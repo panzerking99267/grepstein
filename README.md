@@ -44,11 +44,17 @@ chmod +x grepstein.sh
 ## Usage
 
 Normal mode:
+
+<img width="1140" height="784" alt="Screenshot_20260212_225809" src="https://github.com/user-attachments/assets/c5836eb6-1ca6-4b89-b813-0e57ef86dbc2" />
+
 ```bash
 ./grepstein.sh <search_term>
 ```
 
 With FZF:
+
+<img width="1140" height="784" alt="Screenshot_20260212_225837" src="https://github.com/user-attachments/assets/75f3f08a-be32-440f-b5d3-3add3d5e85ef" />
+
 ```bash
 ./grepstein.sh --fzf <search_term>
 ```
