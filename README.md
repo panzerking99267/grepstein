@@ -43,14 +43,14 @@ chmod +x grepstein.sh
 
 ## Usage
 
+Normal Mode :
 ```bash
 ./grepstein.sh <search_term>
 ```
-
-Example:
+OR (With FZF) :
 
 ```bash
-./grepstein.sh epstein
+./grepstein.sh --fzf <search_term>
 ```
 
 After listing the results, the script waits for a command:
